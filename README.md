@@ -1,5 +1,45 @@
 #zemic
 
+## universal response 
+
+Based on the universal response order you've provided, here’s a breakdown of how to interpret the responses in the commands:
+
+1. **Start**: Always `0x02`
+2. **Address**: This is the ID of the device.
+3. **Frame Length**: Two bytes, `0xLL` (Low Byte) and `0xHH` (High Byte).
+4. **Command Class**: Denoted by ‘A’ (specific to the command being sent or received).
+5. **Status Code**: Indicates the result of the command, where:
+   - `0xFF`: Correct command
+   - `0x00`: Checking error
+   - `0x01`: Invalid command
+   - `0x02`: Storage failure
+   - `0x03`: Parameter error
+   - `0x06`: Length error
+6. **Check**: CS (Checksum).
+7. **End**: Always `0x03`.
+
+### Example Breakdown from Your Document:
+For the response:
+```
+02 81 07 00 57 50 1B E8 01 00 00 00 33 03
+```
+1. **Start**: `02`
+2. **Address**: `81` (Device ID)
+3. **Frame Length**: `07 00` (Length of the frame)
+4. **Command Class**: `57 50` (Command class A in hex)
+5. **Status Code**: `1B` (This might be a status code specific to the device's protocol, not aligning exactly with the provided codes)
+6. **Check**: `33`
+7. **End**: `03`
+
+In this example:
+- The status code (`1B`) might correspond to a device-specific code, which doesn't directly match the provided status codes, suggesting that there could be additional status codes defined in the protocol.
+
+This breakdown can be applied to each command and response to understand how the system is communicating and the results of each command.
+
+
+
+--------------------------------------------------------------
+
 To break down the byte stream `02 01 0F 00 57 50 09 31 39 31 32 30 39 31 38 35 38 30 30 2C 03` into its communication protocol components, we can typically identify the following parts:
 
 1. **Start of Message (SOM)**: `02`
