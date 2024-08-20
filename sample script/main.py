@@ -9,9 +9,7 @@ PORT = 8234
 #get parameter command
 #hex_array = [0x02, 0x01, 0x04, 0x00, 0x51, 0x50, 0x03, 0x00, 0xa9, 0x03]
 #get aisle weight command
-# hex_array = [0x02, 0x01, 0x04, 0x00, 0x51, 0x50, 0x06, 0x00, 0xac, 0x03]
-hex_array =[0x02, 0x01, 0x0B, 0x00 , 0x57 , 0x50 , 0x03 , 0x00 , 0x01 , 0x0A , 0x00 , 0x00 , 0x00 , 0x02 , 0x02 , 0xC5 , 0x03]
-hex_str = "02 01 04 00 51 50 01 00 A7 03"
+hex_array = [0x02, 0x01, 0x04, 0x00, 0x51, 0x50, 0x06, 0x00, 0xac, 0x03]
 #get loadcell weight command
 #hex_array = [0x02, 0x01, 0x04, 0x00, 0x51, 0x50, 0x07, 0x00, 0xad, 0x03]
 # 创建一个 TCP/IP socket Creat a TCP/IP socket
@@ -24,7 +22,7 @@ server_socket.bind((HOST, PORT))
 
 # 开始监听传入的连接 Start listening coming connection
 server_socket.listen(1)
-print('Waiting for a client to connect...')
+print('等待客户端连接...')
 
 # 存储与客户端连接的socket列表 storage the socket list of connecting to clients
 client_sockets = []
@@ -41,11 +39,10 @@ def handle_client(client_socket):
                 #broadcast_message(msg, client_socket)
 
                 #print(time1)
-                # print("msg", msg)
                 hex_a = list(msg)
                 print("[ %s ] receive from %s : %s" % (time1, addr, hex_a))
                 #time.sleep(0.01)
-                response = bytes.fromhex(hex_str)
+                response = bytes(hex_array)
                 time2 = datetime.datetime.now()
                 client_socket.sendall(response)
                 print("[ %s ] send to client: %s" %(time2, response))
@@ -68,19 +65,14 @@ while True:
     # 等待客户端连接. wait for clients connection
     client_socket, addr = server_socket.accept()
 
-    # print('与客户端 {0} 进行连接'.format(addr))
-    print('Connecting with client {0}'.format(addr))
-
+    print('与客户端 {0} 进行连接'.format(addr))
 
     # 将新连接的客户端加入到列表中 add new client to list
     client_sockets.append(client_socket)
 
-    response = bytes.fromhex(hex_str)
-    response = ""
-    # print(f"hex_array: {hex_array}")
-    print("send to client:", hex_str)
+    response = bytes(hex_array)
     client_socket.sendall(response)
-    # print("send to client:", hex_array)
+    print("send to client:", response)
     # 创建一个线程来处理该客户端的消息 creat a thread to handle message from clients
     thread = threading.Thread(target=handle_client, args=(client_socket,))
     thread.start()
